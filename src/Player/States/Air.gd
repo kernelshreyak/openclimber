@@ -5,8 +5,10 @@ extends PlayerState
 func physics_process(delta: float) -> void:
 	_parent.physics_process(delta)
 
-	if player.is_on_floor() or player.climbing:
+	if player.is_on_floor():
 		_state_machine.transition_to("Move/Idle")
+	elif player.climbing:
+		_state_machine.transition_to("Move/Climb")
 	elif player.is_on_ceiling():
 		_parent.velocity.y = 0
 

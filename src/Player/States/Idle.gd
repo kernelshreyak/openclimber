@@ -12,7 +12,7 @@ func physics_process(delta: float) -> void:
 	if player.is_on_floor() and _parent.velocity.length() > 0.01:
 		_state_machine.transition_to("Move/Run")
 	elif player.climbing :
-		_state_machine.transition_to("Move/Idle")
+		_state_machine.transition_to("Move/Climb")
 	elif not player.is_on_floor():
 		_state_machine.transition_to("Move/Air")
 

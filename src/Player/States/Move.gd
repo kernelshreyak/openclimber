@@ -67,12 +67,6 @@ static func get_input_direction() -> Vector3:
 			0,
 			Input.get_action_strength("move_back") - Input.get_action_strength("move_front")
 		)
-static func get_climb_direction() -> Vector3:
-	return Vector3(
-			0,
-			Input.get_action_strength("move_front") - Input.get_action_strength("move_back"),
-			0
-		);
 
 func calculate_velocity(
 		velocity_current: Vector3,

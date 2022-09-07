@@ -8,19 +8,16 @@ func unhandled_input(event: InputEvent) -> void:
 
 func physics_process(delta: float) -> void:
 	_parent.physics_process(delta)
-	if player.is_on_floor() or player.is_on_wall():
-		if _parent.velocity.length() < 0.001:
-			_state_machine.transition_to("Move/Idle")
-	elif player.climbing:
-		_state_machine.transition_to("Move/Climb")
-	else:
+	if !player.climbing:
 		_state_machine.transition_to("Move/Air")
-
+	elif player.is_on_floor():
+		_state_machine.transition_to("Move/Idle")
 
 
 func enter(msg: = {}) -> void:
-	skin.transition_to(skin.States.RUN)
-	skin.is_moving = true
+	print("entered climb state")
+	skin.transition_to(skin.States.CLIMB)
+	skin.is_moving = false
 	_parent.enter()
 
 
