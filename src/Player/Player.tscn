@@ -23,10 +23,11 @@ script = ExtResource( 1 )
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.222992 )
 
 [node name="AnimationTree" parent="Mannequiny" index="2"]
+active = false
 parameters/playback = SubResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.875, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.875, -0.0476509 )
 shape = SubResource( 2 )
 
 [node name="StateMachine" type="Node" parent="."]

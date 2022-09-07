@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Mountain2.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://src/Debug/DebugPanel.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/theme/gdquest.theme" type="Theme" id=7]
 [ext_resource path="res://src/Debug/DebugDock.gd" type="Script" id=8]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=6]
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -25,7 +27,8 @@ __meta__ = {
 }
 
 [node name="AnimationTree" parent="Player/Mannequiny" index="2"]
-active = true
+root_motion_track = NodePath("root")
+parameters/playback = SubResource( 6 )
 
 [node name="Mountain1" parent="." instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.531885, 0, -16 )

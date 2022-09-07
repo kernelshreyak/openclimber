@@ -46,7 +46,7 @@ func physics_process(delta: float) -> void:
 		velocity = calculate_velocity(velocity, move_direction, delta)
 		velocity = player.move_and_slide(velocity, Vector3.UP)
 
-func enter(msg: Dictionary = {}) -> void:
+func enter(_msg: Dictionary = {}) -> void:
 	player.camera.connect("aim_fired", self, "_on_Camera_aim_fired")
 
 
