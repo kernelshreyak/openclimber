@@ -9,8 +9,8 @@ func physics_process(delta: float) -> void:
 		_state_machine.transition_to("Move/Idle")
 	elif player.climbing:
 		_state_machine.transition_to("Move/Climb")
-	elif player.is_on_ceiling():
-		_parent.velocity.y = 0
+#	elif player.is_on_ceiling():
+#		_parent.velocity.y = 0
 
 
 func enter(msg: Dictionary = {}) -> void:

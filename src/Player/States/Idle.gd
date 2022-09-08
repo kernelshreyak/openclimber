@@ -17,7 +17,7 @@ func physics_process(delta: float) -> void:
 		_state_machine.transition_to("Move/Air")
 
 
-func enter(msg: Dictionary = {}) -> void:
+func enter(_msg: Dictionary = {}) -> void:
 	_parent.velocity = Vector3.ZERO
 	skin.transition_to(skin.States.IDLE)
 	_parent.enter()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/3d/materials/obstacle.tres" type="Material" id=1]
 [ext_resource path="res://ClimbPoint.tscn" type="PackedScene" id=2]
@@ -6,6 +6,24 @@
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="ConcavePolygonShape" id=2]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=3]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=4]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=5]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=6]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=7]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=8]
 data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
 
 [node name="Mountain2" type="Spatial"]
@@ -19,6 +37,69 @@ material/0 = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Cube/StaticBody"]
 shape = SubResource( 2 )
+
+[node name="Cube2" type="MeshInstance" parent="."]
+transform = Transform( 0.868241, 0, 0.984808, 0, 10, 0, -4.92404, 0, 0.173648, 6.16631, 40.8721, 9.83327 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube2/StaticBody"]
+shape = SubResource( 3 )
+
+[node name="Cube3" type="MeshInstance" parent="."]
+transform = Transform( -2.18557e-07, 0, 1, 0, 10, 0, -5, 0, -4.37114e-08, -4.63195, 48.7113, 9.83327 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube3"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube3/StaticBody"]
+transform = Transform( 1, 0, -8.88178e-16, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 4 )
+
+[node name="Cube4" type="MeshInstance" parent="."]
+transform = Transform( -2.18557e-07, 0, 1, 0, 10, 0, -5, 0, -4.37114e-08, -3.51459, 48.7113, 26.0518 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube4"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube4/StaticBody"]
+shape = SubResource( 5 )
+
+[node name="Cube5" type="MeshInstance" parent="."]
+transform = Transform( -9.28905e-09, 3.8832, 0.629944, 1.6974e-07, 3.14972, -0.77664, -5, 9.97126e-08, -2.75357e-08, -3.51459, 69.9382, 26.0518 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube5"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube5/StaticBody"]
+transform = Transform( 1, -3.55271e-15, -8.88178e-16, 8.88178e-16, 1, 0, -1.42109e-14, 0, 1, 0, 0, 0 )
+shape = SubResource( 6 )
+
+[node name="Cube6" type="MeshInstance" parent="."]
+transform = Transform( -2.18557e-07, -0.00488687, 1, -1.06802e-10, 10, 0.00048871, -5, 0, -4.37114e-08, 4.99864, 77.2817, 26.0518 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube6"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube6/StaticBody"]
+transform = Transform( 1, -8.88178e-16, 0, 1.58819e-22, 1, -4.65661e-10, 0, -9.70588e-23, 1, 0, 0, 0 )
+shape = SubResource( 7 )
+
+[node name="Cube7" type="MeshInstance" parent="."]
+transform = Transform( -3.42913e-09, -9.99877, 0.0156898, -2.1853e-07, 0.156898, 0.999877, -5, 0, -4.37114e-08, -7.90616, 79.0612, 26.0518 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Cube7"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube7/StaticBody"]
+shape = SubResource( 8 )
 
 [node name="ClimbPoint" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 3.69007, 3.28634, -1.06246 )
@@ -40,3 +121,54 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -3.3348
 
 [node name="ClimbPoint7" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.376388, 38.4879, -1.06246 )
+
+[node name="ClimbPoint8" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.98322, 0, 0.182424, 0, 1, 0, -0.182424, 0, -0.98322, 5.39918, 44.5158, 7.28563 )
+
+[node name="ClimbPoint9" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -3.47235, 46.6104, 6.98107 )
+
+[node name="ClimbPoint15" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -3.47235, 46.6104, 13.6898 )
+
+[node name="ClimbPoint10" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -2.35499, 46.6104, 22.4002 )
+
+[node name="ClimbPoint19" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.173648, 0, -0.984808, 0, 1, 0, 0.984808, 0, -0.173648, -3.44716, 46.6104, 20.8509 )
+
+[node name="ClimbPoint16" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -2.35499, 51.3241, 25.9251 )
+
+[node name="ClimbPoint11" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -2.35499, 57.6958, 26.8421 )
+
+[node name="ClimbPoint12" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -5.01035, 66.8029, 26.8421 )
+
+[node name="ClimbPoint13" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -4.08313, 67.6117, 26.8421 )
+
+[node name="ClimbPoint14" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -3.29927, 68.2161, 26.8421 )
+
+[node name="ClimbPoint20" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -2.17613, 69.115, 26.8421 )
+
+[node name="ClimbPoint21" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -1.3108, 69.9312, 26.8421 )
+
+[node name="ClimbPoint22" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, -0.322178, 70.6918, 26.8421 )
+
+[node name="ClimbPoint17" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, 3.93199, 78.33, 24.2824 )
+
+[node name="ClimbPoint23" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, 3.79272, 71.2888, 26.8421 )
+
+[node name="ClimbPoint24" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, 3.79272, 68.2431, 28.8248 )
+
+[node name="ClimbPoint18" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.999538, 0, 0.0303814, 0, 1, 0, -0.0303814, 0, -0.999538, 3.81408, 84.3287, 26.8421 )

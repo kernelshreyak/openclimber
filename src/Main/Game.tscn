@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Mountain2.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Main/Game.gd" type="Script" id=3]
 [ext_resource path="res://assets/3d/level/level_environment.tres" type="Environment" id=4]
-[ext_resource path="res://src/Level/Playground.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/Debug/DebugPanel.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/theme/gdquest.theme" type="Theme" id=7]
 [ext_resource path="res://src/Debug/DebugDock.gd" type="Script" id=8]
@@ -20,7 +19,7 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.58673, -0.726764, -25.1045 )
+transform = Transform( -0.787075, 0, 0.616857, 0, 1, 0, -0.616857, 0, -0.787075, -15.023, 58.7462, 20.4619 )
 collision_mask = 2
 __meta__ = {
 "_edit_group_": true
@@ -29,9 +28,6 @@ __meta__ = {
 [node name="AnimationTree" parent="Player/Mannequiny" index="2"]
 root_motion_track = NodePath("root")
 parameters/playback = SubResource( 6 )
-
-[node name="Mountain1" parent="." instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.531885, 0, -16 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.766044, 0.166366, -0.620885, 0.271654, 0.791635, 0.547283, 0.582563, -0.587909, 0.561233, -3.00978, 2.72808, 0 )
@@ -59,7 +55,7 @@ anchor_bottom = 0.0
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 445.0
-margin_bottom = 1064.0
+margin_bottom = 752.0
 reference_path = NodePath("../../Player/CameraRig/InterpolatedCamera")
 properties = PoolStringArray( "transform", "fov" )
 round_decimals = 3
