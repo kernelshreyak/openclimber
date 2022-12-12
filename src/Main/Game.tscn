@@ -19,7 +19,7 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( -0.787075, 0, 0.616857, 0, 1, 0, -0.616857, 0, -0.787075, -15.023, 58.7462, 20.4619 )
+transform = Transform( -0.787075, 0, 0.616857, 0, 1, 0, -0.616857, 0, -0.787075, 0.787169, 10.5554, -14.2645 )
 collision_mask = 2
 __meta__ = {
 "_edit_group_": true
