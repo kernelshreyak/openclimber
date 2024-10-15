@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://by87rhtxrmv06"]
+
+[ext_resource type="PackedScene" uid="uid://c8xbq06auec1t" path="res://scenes/player.tscn" id="1_qskfu"]
+[ext_resource type="PackedScene" uid="uid://bqs1hiqk256uw" path="res://scenes/building_1.tscn" id="2_661al"]
+[ext_resource type="PackedScene" uid="uid://qfqndqpr8jlu" path="res://scenes/ledge.tscn" id="3_tc2au"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_peba3"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_kwekm"]
+sky_material = SubResource("ProceduralSkyMaterial_peba3")
+
+[sub_resource type="Environment" id="Environment_8358f"]
+background_mode = 2
+sky = SubResource("Sky_kwekm")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v30ej"]
+size = Vector3(50, 0.1, 50)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6poe1"]
+size = Vector2(50, 50)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8358f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_qskfu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.424874, -10.7873)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_v30ej")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_6poe1")
+skeleton = NodePath("../..")
+
+[node name="building1" parent="." instance=ExtResource("2_661al")]
+transform = Transform3D(0.00419747, 0, 0.499982, 0, 0.5, 0, -0.499982, 0, 0.00419747, 0, 0, 6.40412)
+
+[node name="Ledge2" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(3.99975, 0, -0.00111524, 0, 0.2, 0, 0.0446096, 0, 0.0999938, 0.65227, 6.05355, 2.38148)
+
+[node name="Ledge3" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(3.99975, 0, -0.00111524, 0, 0.2, 0, 0.0446096, 0, 0.0999938, 0.620482, 3.23669, 2.38148)
