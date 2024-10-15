@@ -1,6 +1,6 @@
 ## OpenClimber v2
 
-Open-source 3D mountain climbing game with custom physics implementation for various climbing techniques.
+Open-source 3D urban climbing game with custom physics implementation for various climbing techniques.
 
 ### New Features (v2.0)
  - Remade from scratch with a cleaner,simpler approach and compatible with Godot 4.x with Forward+ Renderer
