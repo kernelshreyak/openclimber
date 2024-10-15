@@ -12,7 +12,8 @@ var is_jumping: bool = false
 var is_near_ledge: bool = false  # Tracks if the player is near a ledge
 
 @onready var animation_player = $AnimationPlayer
-@onready var raycast_top = $RayCast3D  # RayCast for detecting ledges
+@onready var player_skeleton = $Skeleton3D
+@onready var raycast_top = $LegdeRayCast  # RayCast for detecting ledges
 @onready var climbing_script = preload("res://scripts/climbing.gd").new()  # Load the climbing script
 
 func _ready():
@@ -83,11 +84,12 @@ func handle_keyboard_rotation(delta: float):
 # Handle ledge movement (moving left or right on the ledge)
 func handle_ledge_movement():
 	if Input.is_action_pressed("ui_left"):
-		print("move left on ledge")
 		climbing_script.move_along_ledge(-1)  # Move left
 	elif Input.is_action_pressed("ui_right"):
 		climbing_script.move_along_ledge(1)  # Move right
-	else:
+	elif Input.is_action_just_pressed("ui_accept"):
+		climbing_script.jump_from_ledge(Vector3(0, 5, 0))  # Jump upwards from the ledge
+	else:		
 		climbing_script.move_along_ledge(0)
 
 	# Drop from ledge
@@ -96,19 +98,19 @@ func handle_ledge_movement():
 
 # Check if the RayCast is colliding with the ledge
 func check_ledge_collision():
+	
 	if raycast_top.is_colliding():
-		
 		var collider = raycast_top.get_collider()
 		
 		# Check if the collider is a ledge (by comparing it with its type or name)
 		if collider.name == "LedgeStaticBody":
 			is_near_ledge = true  # Set this to true if a ledge is detected
-			if Input.is_action_pressed("ui_accept"):
-				climbing_script.grab_ledge()
+			climbing_script.grab_ledge()
 		else:
 			is_near_ledge = false
 	else:
 		is_near_ledge = false
+		climbing_script.drop_from_ledge()
 
 # Play animation based on movement and jumping state
 func play_animation(direction: Vector3):

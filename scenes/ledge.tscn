@@ -1,11 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://qfqndqpr8jlu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_w34me"]
+size = Vector3(3, 2, 5)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_t5avn"]
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_2iitm"]
+data = PackedVector3Array(-1.5, 1, 2.5, 1.5, 1, 2.5, -1.5, -1, 2.5, 1.5, 1, 2.5, 1.5, -1, 2.5, -1.5, -1, 2.5, 1.5, 1, -2.5, -1.5, 1, -2.5, 1.5, -1, -2.5, -1.5, 1, -2.5, -1.5, -1, -2.5, 1.5, -1, -2.5, 1.5, 1, 2.5, 1.5, 1, -2.5, 1.5, -1, 2.5, 1.5, 1, -2.5, 1.5, -1, -2.5, 1.5, -1, 2.5, -1.5, 1, -2.5, -1.5, 1, 2.5, -1.5, -1, -2.5, -1.5, 1, 2.5, -1.5, -1, 2.5, -1.5, -1, -2.5, 1.5, 1, 2.5, -1.5, 1, 2.5, 1.5, 1, -2.5, -1.5, 1, 2.5, -1.5, 1, -2.5, 1.5, 1, -2.5, -1.5, -1, 2.5, 1.5, -1, 2.5, -1.5, -1, -2.5, 1.5, -1, 2.5, 1.5, -1, -2.5, -1.5, -1, -2.5)
 
 [node name="Ledge" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 0.05, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0, 0)
 
 [node name="LedgeStaticBody" type="StaticBody3D" parent="."]
 
@@ -13,4 +15,4 @@ transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 0.05, 0, 0, 0)
 mesh = SubResource("BoxMesh_w34me")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LedgeStaticBody"]
-shape = SubResource("BoxShape3D_t5avn")
+shape = SubResource("ConcavePolygonShape3D_2iitm")
