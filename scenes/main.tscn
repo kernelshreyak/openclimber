@@ -33,7 +33,7 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_qskfu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.424874, -10.7873)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10107, 6.68041, 2.21445)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -46,7 +46,34 @@ mesh = SubResource("PlaneMesh_6poe1")
 skeleton = NodePath("../..")
 
 [node name="building1" parent="." instance=ExtResource("2_661al")]
-transform = Transform3D(0.00419747, 0, 0.499982, 0, 0.5, 0, -0.499982, 0, 0.00419747, 0, 0, 6.40412)
+transform = Transform3D(0.00419747, 0, 0.499982, 0, 0.5, 0, -0.499982, 0, 0.00419747, 0, -9.53674e-07, 6.40412)
 
 [node name="Ledge" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 2.62739, 2.20814)
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 2.62739, 2.02991)
+
+[node name="Ledge2" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, -1.88277, 4.42111, 2.12541)
+
+[node name="Ledge3" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.5, 1.09874, 6.60749, 2.04785)
+
+[node name="Ledge4" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.499979, 0, 0.2, 0, 0.199991, 0, 0.00463376, 1.09874, 9.06512, 2.61676)
+
+[node name="Ledge5" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.299987, 0, 0.2, 0, 0.199991, 0, 0.00278025, -0.778042, 10.194, 2.61676)
+
+[node name="Ledge7" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -1.29523, 11.5353, 2.61676)
+
+[node name="Ledge8" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -2.20743, 12.816, 2.61676)
+
+[node name="Ledge9" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -1.29523, 14.4311, 2.61676)
+
+[node name="Ledge11" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.7, 1.49447, 17.2155, -1.17622)
+
+[node name="Ledge10" parent="." instance=ExtResource("3_tc2au")]
+transform = Transform3D(0.0018535, 0, -0.499979, 0, 0.2, 0, 0.199991, 0, 0.00463376, -0.346094, 16.1936, 2.61676)

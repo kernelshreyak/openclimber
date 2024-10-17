@@ -14,7 +14,9 @@ var is_near_ledge: bool = false  # Tracks if the player is near a ledge
 @onready var animation_player = $AnimationPlayer
 @onready var player_skeleton = $Skeleton3D
 @onready var raycast_top = $LegdeRayCast  # RayCast for detecting ledges
+@onready var top_marker = $TopMarker  # Marker for detecing top of player
 @onready var climbing_script = preload("res://scripts/climbing.gd").new()  # Load the climbing script
+@onready var player_top_colliding_with = ""
 
 func _ready():
 	climbing_script.player = self  # Pass reference to the player in climbing script
@@ -34,7 +36,12 @@ func _physics_process(delta: float) -> void:
 	# Handle jump input (if not climbing)
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not climbing_script.is_climbing:
 		velocity.y = JUMP_VELOCITY
-
+	
+	
+	if Input.is_action_just_pressed("ui_accept") and climbing_script.is_grabbing_ledge:
+		print("jump while grabbing ledge")
+		velocity.y = JUMP_VELOCITY + 25
+	
 	# Get input direction (WASD or arrow keys)
 	_move_vec = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction := Vector3(_move_vec.x, 0, _move_vec.y)  # Fix for forward/backward direction
@@ -87,9 +94,11 @@ func handle_ledge_movement():
 		climbing_script.move_along_ledge(-1)  # Move left
 	elif Input.is_action_pressed("ui_right"):
 		climbing_script.move_along_ledge(1)  # Move right
+	#elif Input.is_action_pressed("ui_up"):
+		#climbing_script.hop_up_ledge(1)  # Move up/hop-up
 	elif Input.is_action_just_pressed("ui_accept"):
 		climbing_script.jump_from_ledge(Vector3(0, 5, 0))  # Jump upwards from the ledge
-	else:		
+	else:
 		climbing_script.move_along_ledge(0)
 
 	# Drop from ledge
@@ -98,16 +107,18 @@ func handle_ledge_movement():
 
 # Check if the RayCast is colliding with the ledge
 func check_ledge_collision():
-	
+	#print("is_grabbing_ledge",climbing_script.is_grabbing_ledge)
 	if raycast_top.is_colliding():
 		var collider = raycast_top.get_collider()
-		
+		player_top_colliding_with = collider.name
+		#print(player_top_colliding_with)
 		# Check if the collider is a ledge (by comparing it with its type or name)
-		if collider.name == "LedgeStaticBody":
+		if player_top_colliding_with == "LedgeStaticBody":
 			is_near_ledge = true  # Set this to true if a ledge is detected
 			climbing_script.grab_ledge()
 		else:
 			is_near_ledge = false
+			climbing_script.drop_from_ledge()
 	else:
 		is_near_ledge = false
 		climbing_script.drop_from_ledge()

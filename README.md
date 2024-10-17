@@ -7,9 +7,11 @@ Open-source 3D urban climbing game with custom physics implementation for variou
  - Better animation transitions
  - 2.0: Realistic climbing and movement on ledges
  - 2.1: Realistic climbing and movement on ladders
- - 2.2: Realistic climbing and movement on climbable portions of walls 
+ - 2.2: Realistic climbing and movement on climbable portions of walls
  - 2.3: Game Menu
 
 ### Installation
 1. Download Godot 4.x from https://godotengine.org/download/
 2. Open the project.godot file in Godot
+
+**Preview Screencast:** [Watch here](https://drive.google.com/file/d/1vDeq46uHeIsy6keVXTva3I7BqDe0_6jK/view?usp=drive_link)
