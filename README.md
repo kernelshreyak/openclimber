@@ -14,5 +14,4 @@ Open-source 3D urban climbing game with custom physics implementation for variou
 1. Download Godot 4.x from https://godotengine.org/download/
 2. Open the project.godot file in Godot
 
-**Preview Screencast:**
-<video src="./openclimber_v2_recording.mp4"></video>
+**Preview Screencast:** [Watch here](https://drive.google.com/file/d/1vDeq46uHeIsy6keVXTva3I7BqDe0_6jK/view?usp=drive_link)
