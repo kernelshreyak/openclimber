@@ -3,7 +3,7 @@ extends Node
 # Constants for climbing
 const CLIMB_SPEED = 2.0  # Speed for moving along the ledge
 const DROP_VELOCITY = -10.0  # Velocity when dropping from the ledge
-const LEDGE_JUMP_VELOCITY = 7.0  # Velocity when jumping from the ledge
+const LEDGE_JUMP_VELOCITY = 9.0  # Velocity when jumping from the ledge
 const LEDGE_MOVE_VELOCITY = Vector3(.02,0,0)  # Velocity when moving left and right on ledge
 const LEDGE_HOPUP_VELOCITY = Vector3(0,0.02,0)  # Velocity when hopping up on ledge
 
