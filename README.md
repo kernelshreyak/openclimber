@@ -28,6 +28,7 @@ This version has been **rebuilt from scratch** with a cleaner architecture and f
   - ledges
 - Better handling for dynamic climbable surface placement
 - Overall system refinements and animation/physics transitions
+- Dev log: [docs/v2.1/v2.1-dev-log.md](/home/shreyak/programming/openclimber/docs/v2.1/v2.1-dev-log.md)
 
 ### v2.2 — Ladders
 - Realistic ladder climbing and transitions
