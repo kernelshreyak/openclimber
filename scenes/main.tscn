@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://by87rhtxrmv06"]
 
 [ext_resource type="PackedScene" uid="uid://c8xbq06auec1t" path="res://scenes/player.tscn" id="1_qskfu"]
-[ext_resource type="PackedScene" path="res://scenes/climbable_surface.tscn" id="3_7vh5g"]
+[ext_resource type="PackedScene" uid="uid://c6c2cxddb125a" path="res://scenes/climbable_surface.tscn" id="3_7vh5g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_peba3"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -43,17 +43,14 @@ shape = SubResource("BoxShape3D_v30ej")
 transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_6poe1")
 
-[node name="ClimbableSurfaceFront" parent="." unique_id=608335115 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(1, 0, 0, 0, 0.92945486, -0.3689358, 0, 0.3689358, 0.92945486, 0, 3, 1.8)
+[node name="ClimbableSurface1" parent="." unique_id=608335115 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(0.5, 0, 0, 0, 0.49997184, -0.0053057075, 0, 0.0053057075, 0.49997184, 0, 3, 1.8)
 
-[node name="ClimbableSurfaceLeftAngle" parent="." unique_id=227559671 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -4.5, 3.3, -1.6)
+[node name="ClimbableSurface2" parent="." unique_id=1470782273 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(0.5, 0, 0, 0, 0.49997184, -0.0053057075, 0, 0.0053057075, 0.49997184, 0, 6.0806866, 1.8)
 
-[node name="ClimbableSurfaceRightAngle" parent="." unique_id=194091989 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(0.9996422, 0, -0.02675271, 0, 1, 0, 0.02675271, 0, 0.9996422, -0.6208353, 5.2220955, 2.9080987)
+[node name="ClimbableSurface3" parent="." unique_id=861206444 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(1, 0, 0, 0, 2.6822517, 0.4478995, 0, -1.3436985, 0.8940839, 0, 15.983542, -5.4262385)
 
-[node name="ClimbableSurfaceSteep" parent="." unique_id=286994587 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(1, 0, 0, 0, 0.95105654, 0.309017, 0, -0.309017, 0.95105654, 0, 5.2, -5.2)
-
-[node name="ClimbableSurfaceTraverse" parent="." unique_id=624425458 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(1.35, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 8.4, -8.4)
+[node name="ClimbableSurface4" parent="." unique_id=379254118 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(1, 0, 0, 0, 0.8065168, 0.5912111, 0, -0.5912111, 0.8065168, 0, 8.793687, -1.3561127)

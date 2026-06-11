@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://c6c2cxddb125a"]
 
-[ext_resource type="Script" path="res://scripts/climbable_surface.gd" id="1_hk77t"]
+[ext_resource type="Script" uid="uid://ba7skm2cxs1qn" path="res://scripts/climbable_surface.gd" id="1_hk77t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jx6qb"]
 size = Vector3(3.5, 4, 0.6)
@@ -11,12 +11,12 @@ size = Vector3(3.5, 4, 0.6)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2k7qx"]
 albedo_color = Color(0.87451, 0.333333, 0.278431, 1)
 
-[node name="ClimbableSurface" type="StaticBody3D"]
+[node name="ClimbableSurface" type="StaticBody3D" unique_id=1470782273]
 script = ExtResource("1_hk77t")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=208120142]
 shape = SubResource("BoxShape3D_jx6qb")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1805927500]
 mesh = SubResource("BoxMesh_qcwlr")
 surface_material_override/0 = SubResource("StandardMaterial3D_2k7qx")

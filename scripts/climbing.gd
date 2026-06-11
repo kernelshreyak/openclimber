@@ -1,8 +1,8 @@
 extends Node
 
 const CLIMB_SPEED := 4.0
-const SURFACE_OFFSET := 1.02
-const JUMP_PUSH := 4.0
+const SURFACE_OFFSET    := 1.02
+const JUMP_PUSH := 7.0
 const JUMP_LIFT := 5.5
 const REGRAB_COOLDOWN := 0.3
 var is_climbing := false
