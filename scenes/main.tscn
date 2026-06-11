@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://by87rhtxrmv06"]
+[gd_scene format=3 uid="uid://by87rhtxrmv06"]
 
 [ext_resource type="PackedScene" uid="uid://c8xbq06auec1t" path="res://scenes/player.tscn" id="1_qskfu"]
-[ext_resource type="PackedScene" uid="uid://bqs1hiqk256uw" path="res://scenes/building_1.tscn" id="2_661al"]
-[ext_resource type="PackedScene" uid="uid://qfqndqpr8jlu" path="res://scenes/ledge.tscn" id="3_tc2au"]
+[ext_resource type="PackedScene" path="res://scenes/climbable_surface.tscn" id="3_7vh5g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_peba3"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -23,57 +22,38 @@ size = Vector3(50, 0.1, 50)
 [sub_resource type="PlaneMesh" id="PlaneMesh_6poe1"]
 size = Vector2(50, 50)
 
-[node name="Node3D" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1908581945]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1326775595]
 environment = SubResource("Environment_8358f")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1564536174]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Player" parent="." instance=ExtResource("1_qskfu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10107, 6.68041, 2.21445)
+[node name="Player" parent="." unique_id=2106825783 instance=ExtResource("1_qskfu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 6)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1718009584]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=902755542]
 shape = SubResource("BoxShape3D_v30ej")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=532620759]
 transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_6poe1")
-skeleton = NodePath("../..")
 
-[node name="building1" parent="." instance=ExtResource("2_661al")]
-transform = Transform3D(0.00419747, 0, 0.499982, 0, 0.5, 0, -0.499982, 0, 0.00419747, 0, -9.53674e-07, 6.40412)
+[node name="ClimbableSurfaceFront" parent="." unique_id=608335115 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(1, 0, 0, 0, 0.92945486, -0.3689358, 0, 0.3689358, 0.92945486, 0, 3, 1.8)
 
-[node name="Ledge" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 2.62739, 2.02991)
+[node name="ClimbableSurfaceLeftAngle" parent="." unique_id=227559671 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -4.5, 3.3, -1.6)
 
-[node name="Ledge2" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, -1.88277, 4.42111, 2.12541)
+[node name="ClimbableSurfaceRightAngle" parent="." unique_id=194091989 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(0.88294756, 0, -0.46947157, 0, 1, 0, 0.46947157, 0, 0.88294756, 4.5, 3.3, -1.6)
 
-[node name="Ledge3" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.5, 1.09874, 6.60749, 2.04785)
+[node name="ClimbableSurfaceSteep" parent="." unique_id=286994587 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(1, 0, 0, 0, 0.95105654, 0.309017, 0, -0.309017, 0.95105654, 0, 5.2, -5.2)
 
-[node name="Ledge4" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.499979, 0, 0.2, 0, 0.199991, 0, 0.00463376, 1.09874, 9.06512, 2.61676)
-
-[node name="Ledge5" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.299987, 0, 0.2, 0, 0.199991, 0, 0.00278025, -0.778042, 10.194, 2.61676)
-
-[node name="Ledge7" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -1.29523, 11.5353, 2.61676)
-
-[node name="Ledge8" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -2.20743, 12.816, 2.61676)
-
-[node name="Ledge9" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.199991, 0, 0.2, 0, 0.199991, 0, 0.0018535, -1.29523, 14.4311, 2.61676)
-
-[node name="Ledge11" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.7, 1.49447, 17.2155, -1.17622)
-
-[node name="Ledge10" parent="." instance=ExtResource("3_tc2au")]
-transform = Transform3D(0.0018535, 0, -0.499979, 0, 0.2, 0, 0.199991, 0, 0.00463376, -0.346094, 16.1936, 2.61676)
+[node name="ClimbableSurfaceTraverse" parent="." unique_id=624425458 instance=ExtResource("3_7vh5g")]
+transform = Transform3D(1.35, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 8.4, -8.4)

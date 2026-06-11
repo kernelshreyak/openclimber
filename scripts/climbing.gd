@@ -1,98 +1,117 @@
 extends Node
 
-# Constants for climbing
-const CLIMB_SPEED = 2.0  # Speed for moving along the ledge
-const DROP_VELOCITY = -10.0  # Velocity when dropping from the ledge
-const LEDGE_JUMP_VELOCITY = 9.0  # Velocity when jumping from the ledge
-const LEDGE_MOVE_VELOCITY = Vector3(.02,0,0)  # Velocity when moving left and right on ledge
-const LEDGE_HOPUP_VELOCITY = Vector3(0,0.02,0)  # Velocity when hopping up on ledge
+const CLIMB_SPEED := 2.5
+const SURFACE_OFFSET := 1.02
+const JUMP_PUSH := 4.0
+const JUMP_LIFT := 5.5
+const REGRAB_COOLDOWN := 0.3
 
-var is_climbing: bool = false  # Tracks if the player is in the climbing state
-var is_grabbing_ledge: bool = false  # Tracks if the player is holding on the ledge
-var ledge_direction: Vector3 = Vector3.ZERO  # Direction the player can move along the ledge
+var is_climbing := false
+var surface_normal := Vector3.FORWARD
+var last_collision_point := Vector3.ZERO
+var active_surface: Node3D = null
+var blocked_surface: Node3D = null
+var regrab_cooldown := 0.0
+var player
 
-# Reference to the player node
-@onready var player = preload("res://scenes/player.tscn").new()
+func tick(delta: float) -> void:
+	regrab_cooldown = maxf(regrab_cooldown - delta, 0.0)
+	if regrab_cooldown == 0.0:
+		blocked_surface = null
 
-func grab_ledge():
-	if is_grabbing_ledge:
+func can_start_climb() -> bool:
+	if regrab_cooldown > 0.0:
+		if not _refresh_surface_contact():
+			blocked_surface = null
+		elif active_surface != blocked_surface:
+			regrab_cooldown = 0.0
+			blocked_surface = null
+		else:
+			return false
+
+	return _refresh_surface_contact()
+
+func grab_surface() -> void:
+	if not _refresh_surface_contact():
 		return
 
-	print("grab ledge")
-	player.velocity = Vector3.ZERO  # Stop the player's velocity when grabbing the ledge
 	is_climbing = true
-	is_grabbing_ledge = true
-	
-	adjust_climber_body()
+	player.velocity = Vector3.ZERO
+	_snap_player_to_surface()
 
-func move_along_ledge(direction: float):
-	if not is_grabbing_ledge:
+func physics_step(delta: float, input_vec: Vector2) -> void:
+	if not is_climbing:
 		return
 
-	# Moving left (-1) or right (+1) along the ledge and (0) to stay hanged on ledge
-	# Play appropriate animation for movement
-	if direction < 0:
-		player.global_transform.origin += LEDGE_MOVE_VELOCITY
-		player.animation_player.play("LedgeMoveLeft")
-	elif direction > 0:
-		player.global_transform.origin -= LEDGE_MOVE_VELOCITY
-		player.animation_player.play("LedgeMoveRight")
+	if not _refresh_surface_contact():
+		drop_from_surface()
+		return
+
+	var surface_right := surface_normal.cross(Vector3.UP)
+	if surface_right.length_squared() < 0.001:
+		surface_right = player.global_basis.x
 	else:
-		player.animation_player.play("HangingIdle")
+		surface_right = surface_right.normalized()
 
-func hop_up_ledge(direction: float):
-	if not is_grabbing_ledge:
+	var surface_up := _surface_up()
+	var motion := surface_right * input_vec.x
+	motion += surface_up * -input_vec.y
+
+	if motion.length_squared() > 0.0:
+		player.global_position += motion.normalized() * CLIMB_SPEED * delta
+
+	player.velocity = Vector3.ZERO
+	_snap_player_to_surface()
+
+func jump_from_surface() -> void:
+	if not is_climbing:
 		return
 
-	# Moving up (-1) up the ledge and (0) to stay hanged on ledge
-	# Play appropriate animation for movement
-	if direction > 0:
-		player.global_transform.origin += LEDGE_HOPUP_VELOCITY
-		#player.animation_player.play("LedgeHopUp")
-	else:
-		player.animation_player.play("HangingIdle")
-
-func drop_from_ledge():
-	if not is_grabbing_ledge:
-		return
-	print("drop_from_ledge")
-	player.player_skeleton.global_transform.origin = player.global_transform.origin
-	set_not_climbing()
-	adjust_climber_body()
-	
-	player.velocity.y = DROP_VELOCITY  # Drop the player down
-	player.animation_player.play("Idle")  # Return to idle animation
-
-func jump_from_ledge(direction: Vector3):
-	if not is_grabbing_ledge:
-		return
-
-	print("jump from ledge")
-	
-	# Perform a jump from the ledge to the desired direction (up, left, right, or diagonally)
-	player.velocity = direction.normalized() * LEDGE_JUMP_VELOCITY  # Apply jump velocity
-	
-	set_not_climbing()
-	
-	# Play appropriate jump animation based on direction
-	player.animation_player.play("Jumping")  # Generic jump animation
-	adjust_climber_body()
-
-func set_not_climbing():
+	_begin_release_lock()
 	is_climbing = false
-	is_grabbing_ledge = false
-		
-# Adjust and align the skeleton and collision shape as per climbing conditions
-func adjust_climber_body():
-	if is_grabbing_ledge and player.player_top_colliding_with == "LedgeStaticBody":
-		# Rotate the player to face the ledge, aligning the player's forward vector with the ledge normal
-		var ledge_normal = player.raycast_top.get_collision_normal()
-		var ledge_rotation = player.global_transform.basis
-		ledge_rotation = Basis().looking_at(ledge_normal, Vector3.UP)
-		player.global_transform.basis = ledge_rotation
-		
-		
-		# Adjust the skeleton position slightly below the ledge to match the player's body
-		player.player_skeleton.global_transform.origin = player.global_transform.origin - Vector3(0,0.65,0)
-	else:
-		player.player_skeleton.global_transform.origin = player.global_transform.origin
+	active_surface = null
+	player.velocity = surface_normal * JUMP_PUSH + Vector3.UP * JUMP_LIFT
+
+func drop_from_surface() -> void:
+	if not is_climbing:
+		return
+
+	_begin_release_lock()
+	is_climbing = false
+	active_surface = null
+	player.velocity = Vector3.DOWN * 2.0
+
+func _begin_release_lock() -> void:
+	blocked_surface = active_surface
+	regrab_cooldown = REGRAB_COOLDOWN
+
+func _refresh_surface_contact() -> bool:
+	player.climb_probe.force_raycast_update()
+	if not player.climb_probe.is_colliding():
+		active_surface = null
+		return false
+
+	var collider: Object = player.climb_probe.get_collider()
+	var collider_node := collider as Node
+	if collider_node == null or not collider_node.is_in_group("climbable_surface"):
+		active_surface = null
+		return false
+
+	active_surface = collider_node as Node3D
+	last_collision_point = player.climb_probe.get_collision_point()
+	surface_normal = player.climb_probe.get_collision_normal().normalized()
+	return true
+
+func _snap_player_to_surface() -> void:
+	var up := _surface_up()
+	var desired_basis := Basis.looking_at(-surface_normal, up).orthonormalized()
+	player.global_basis = desired_basis
+
+	var probe_offset: Vector3 = desired_basis * player.climb_probe.position
+	player.global_position = last_collision_point + surface_normal * SURFACE_OFFSET - probe_offset
+
+func _surface_up() -> Vector3:
+	var projected_up := Vector3.UP - surface_normal * Vector3.UP.dot(surface_normal)
+	if projected_up.length_squared() < 0.001:
+		return player.global_basis.y
+	return projected_up.normalized()

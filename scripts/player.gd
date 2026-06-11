@@ -1,142 +1,132 @@
 extends CharacterBody3D
 
-# Constants for player speed, jump, and rotation
-const WALK_SPEED = 5.0
-const RUN_SPEED = 20.0
-const JUMP_VELOCITY = 5.5
-const ROTATION_SPEED = 5.0  # Speed at which the player rotates smoothly
+const WALK_SPEED := 4.5
+const RUN_SPEED := 7.5
+const JUMP_VELOCITY := 6.0
+const ROTATION_SPEED := 2.8
+const CAMERA_ROTATE_SPEED := 0.01
+const CAMERA_PAN_SPEED := 0.01
+const CAMERA_ZOOM_STEP := 0.45
+const CAMERA_ZOOM_MIN := 3.0
+const CAMERA_ZOOM_MAX := 9.0
+const CAMERA_PITCH_MIN := deg_to_rad(-65.0)
+const CAMERA_PITCH_MAX := deg_to_rad(15.0)
+const CAMERA_DEFAULT_PITCH := deg_to_rad(-14.0)
+const CAMERA_PAN_X_LIMIT := 2.5
+const CAMERA_PAN_Z_LIMIT := 2.5
+const CAMERA_PAN_Y_MIN := 0.8
+const CAMERA_PAN_Y_MAX := 3.0
+const CAMERA_FOLLOW_HEIGHT := 1.7
 
-var _move_vec: Vector2 = Vector2.ZERO
-var is_running: bool = false
-var is_jumping: bool = false
-var is_near_ledge: bool = false  # Tracks if the player is near a ledge
+var animation_time := 0.0
+var camera_yaw := 0.0
+var camera_pitch := CAMERA_DEFAULT_PITCH
+var camera_pan := Vector3.ZERO
 
-@onready var animation_player = $AnimationPlayer
-@onready var player_skeleton = $Skeleton3D
-@onready var raycast_top = $LegdeRayCast  # RayCast for detecting ledges
-@onready var top_marker = $TopMarker  # Marker for detecing top of player
-@onready var climbing_script = preload("res://scripts/climbing.gd").new()  # Load the climbing script
-@onready var player_top_colliding_with = ""
+@onready var climb_probe: RayCast3D = $ClimbProbe
+@onready var climbing = $Climbing
+@onready var rig = $VisualRoot
+@onready var camera_pivot: Node3D = $CameraPivot
+@onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
 
-func _ready():
-	climbing_script.player = self  # Pass reference to the player in climbing script
-	raycast_top.enabled = true  # Enable the raycast
+func _ready() -> void:
+	climbing.player = self
+	camera_pivot.top_level = true
+	_center_camera()
 
 func _physics_process(delta: float) -> void:
-	# Add gravity if the player is not on the floor and not climbing
-	if not is_on_floor() and not climbing_script.is_climbing:
-		velocity += get_gravity() * delta
+	animation_time += delta
+	climbing.tick(delta)
+	_sync_camera_follow()
 
-	# Check if the RayCast is colliding with a ledge
-	check_ledge_collision()
+	var climb_input := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 
-	if climbing_script.is_grabbing_ledge:
-		handle_ledge_movement()
-
-	# Handle jump input (if not climbing)
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not climbing_script.is_climbing:
-		velocity.y = JUMP_VELOCITY
-	
-	
-	if Input.is_action_just_pressed("ui_accept") and climbing_script.is_grabbing_ledge:
-		print("jump while grabbing ledge")
-		velocity.y = JUMP_VELOCITY + 25
-	
-	# Get input direction (WASD or arrow keys)
-	_move_vec = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction := Vector3(_move_vec.x, 0, _move_vec.y)  # Fix for forward/backward direction
-
-	# Handle running input
-	is_running = Input.is_action_pressed("run")
-	var speed = RUN_SPEED if is_running else WALK_SPEED
-
-	# Apply movement if there's input
-	if direction.length() > 0 and not climbing_script.is_climbing:
-		direction = direction.normalized()
-		move_player(direction, speed, delta)
-	else:
-		# Decelerate when no input is provided
-		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
-		velocity.z = move_toward(velocity.z, 0, WALK_SPEED)
-
-	# Play animations based on movement and state
-	play_animation(direction)
-	
-	handle_keyboard_rotation(delta)
-
-	# Move the player
-	move_and_slide()
-
-# Move player based on direction and speed
-func move_player(direction: Vector3, speed: float, _delta: float):
-	# Calculate the movement vector based on the player's current rotation
-	var forward = -transform.basis.z
-	var right = transform.basis.x
-	var movement = (forward * direction.z + right * direction.x).normalized()
-
-	# Update velocity based on movement direction
-	velocity.x = movement.x * speed
-	velocity.z = movement.z * speed
-
-# Smoothly rotate the player toward the movement direction
-func handle_keyboard_rotation(delta: float):
-	if climbing_script.is_grabbing_ledge:
+	if climbing.is_climbing:
+		if Input.is_action_just_pressed("ui_accept"):
+			climbing.jump_from_surface()
+		else:
+			climbing.physics_step(delta, climb_input)
+		move_and_slide()
+		rig.pose_for_climb(climbing.surface_normal, climb_input, animation_time)
 		return
-	# Handle keyboard rotation (left/right keys)
-	if Input.is_action_pressed("ui_left"):
-		rotate_y(ROTATION_SPEED * delta)  # Rotate left
-	elif Input.is_action_pressed("ui_right"):
-		rotate_y(-ROTATION_SPEED * delta)  # Rotate right
 
-# Handle ledge movement (moving left or right on the ledge)
-func handle_ledge_movement():
-	if Input.is_action_pressed("ui_left"):
-		climbing_script.move_along_ledge(-1)  # Move left
-	elif Input.is_action_pressed("ui_right"):
-		climbing_script.move_along_ledge(1)  # Move right
-	#elif Input.is_action_pressed("ui_up"):
-		#climbing_script.hop_up_ledge(1)  # Move up/hop-up
-	elif Input.is_action_just_pressed("ui_accept"):
-		climbing_script.jump_from_ledge(Vector3(0, 5, 0))  # Jump upwards from the ledge
-	else:
-		climbing_script.move_along_ledge(0)
-
-	# Drop from ledge
-	if Input.is_action_pressed("ui_down"):
-		climbing_script.drop_from_ledge()
-
-# Check if the RayCast is colliding with the ledge
-func check_ledge_collision():
-	#print("is_grabbing_ledge",climbing_script.is_grabbing_ledge)
-	if raycast_top.is_colliding():
-		var collider = raycast_top.get_collider()
-		player_top_colliding_with = collider.name
-		#print(player_top_colliding_with)
-		# Check if the collider is a ledge (by comparing it with its type or name)
-		if player_top_colliding_with == "LedgeStaticBody":
-			is_near_ledge = true  # Set this to true if a ledge is detected
-			climbing_script.grab_ledge()
-		else:
-			is_near_ledge = false
-			climbing_script.drop_from_ledge()
-	else:
-		is_near_ledge = false
-		climbing_script.drop_from_ledge()
-
-# Play animation based on movement and jumping state
-func play_animation(direction: Vector3):
 	if not is_on_floor():
-		if velocity.y > 0:
-			animation_player.play("Jumping", -1, 1.5)  # Jumping animation plays faster
-		elif velocity.y < 0:
-			animation_player.play("Falling")
+		velocity += get_gravity() * delta
+		if climbing.can_start_climb():
+			climbing.grab_surface()
+			move_and_slide()
+			rig.pose_for_climb(climbing.surface_normal, climb_input, animation_time)
+			return
 	else:
-		if direction.length() > 0:
-			if direction.z > 0:  # Moving backward (negative Z direction)
-				animation_player.play("WalkBack")
-			elif is_running:
-				animation_player.play("Running")
-			else:
-				animation_player.play("Walking")
-		else:
-			animation_player.play("Idle")
+		_restore_upright_basis(delta)
+
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("camera_center"):
+		_center_camera()
+
+	var is_running := Input.is_action_pressed("run")
+	var speed := RUN_SPEED if is_running else WALK_SPEED
+	var forward_input := Input.get_axis("ui_down", "ui_up")
+	var turn_input := Input.get_axis("ui_right", "ui_left")
+
+	if absf(turn_input) > 0.001:
+		rotate_y(turn_input * ROTATION_SPEED * delta)
+
+	if absf(forward_input) > 0.001:
+		var direction := -global_basis.z * forward_input
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, WALK_SPEED)
+		velocity.z = move_toward(velocity.z, 0.0, WALK_SPEED)
+
+	move_and_slide()
+	rig.pose_for_ground(forward_input, turn_input, animation_time, is_on_floor())
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			camera_yaw -= event.relative.x * CAMERA_ROTATE_SPEED
+			camera_pitch = clamp(camera_pitch - event.relative.y * CAMERA_ROTATE_SPEED, CAMERA_PITCH_MIN, CAMERA_PITCH_MAX)
+			_update_camera_transform()
+		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+			var pan_basis := Basis.from_euler(Vector3(0.0, camera_yaw, 0.0))
+			var right := pan_basis.x
+			var up := Vector3.UP
+			camera_pan += (-right * event.relative.x + up * event.relative.y) * CAMERA_PAN_SPEED
+			camera_pan.x = clamp(camera_pan.x, -CAMERA_PAN_X_LIMIT, CAMERA_PAN_X_LIMIT)
+			camera_pan.z = clamp(camera_pan.z, -CAMERA_PAN_Z_LIMIT, CAMERA_PAN_Z_LIMIT)
+			camera_pan.y = clamp(camera_pan.y, CAMERA_PAN_Y_MIN, CAMERA_PAN_Y_MAX)
+			_update_camera_transform()
+	elif event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			spring_arm.spring_length = maxf(CAMERA_ZOOM_MIN, spring_arm.spring_length - CAMERA_ZOOM_STEP)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			spring_arm.spring_length = minf(CAMERA_ZOOM_MAX, spring_arm.spring_length + CAMERA_ZOOM_STEP)
+
+func _sync_camera_follow() -> void:
+	var yaw_basis := Basis.from_euler(Vector3(0.0, camera_yaw, 0.0))
+	camera_pivot.global_position = global_position + Vector3.UP * CAMERA_FOLLOW_HEIGHT + yaw_basis * camera_pan
+
+func _center_camera() -> void:
+	var facing := (-global_basis.z).normalized()
+	camera_yaw = atan2(facing.x, facing.z) + PI
+	camera_pitch = CAMERA_DEFAULT_PITCH
+	camera_pan = Vector3.ZERO
+	_update_camera_transform()
+	_sync_camera_follow()
+
+func _update_camera_transform() -> void:
+	camera_pivot.rotation = Vector3(camera_pitch, camera_yaw, 0.0)
+
+func _restore_upright_basis(delta: float) -> void:
+	var forward := -global_basis.z
+	forward.y = 0.0
+	if forward.length_squared() <= 0.001:
+		forward = Vector3.FORWARD
+	else:
+		forward = forward.normalized()
+
+	var target_basis := Basis.looking_at(forward, Vector3.UP).orthonormalized()
+	global_basis = global_basis.slerp(target_basis, minf(1.0, delta * 10.0)).orthonormalized()
