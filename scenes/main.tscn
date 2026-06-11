@@ -50,7 +50,7 @@ transform = Transform3D(1, 0, 0, 0, 0.92945486, -0.3689358, 0, 0.3689358, 0.9294
 transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -4.5, 3.3, -1.6)
 
 [node name="ClimbableSurfaceRightAngle" parent="." unique_id=194091989 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(0.88294756, 0, -0.46947157, 0, 1, 0, 0.46947157, 0, 0.88294756, 4.5, 3.3, -1.6)
+transform = Transform3D(0.9996422, 0, -0.02675271, 0, 1, 0, 0.02675271, 0, 0.9996422, -0.6208353, 5.2220955, 2.9080987)
 
 [node name="ClimbableSurfaceSteep" parent="." unique_id=286994587 instance=ExtResource("3_7vh5g")]
 transform = Transform3D(1, 0, 0, 0, 0.95105654, 0.309017, 0, -0.309017, 0.95105654, 0, 5.2, -5.2)

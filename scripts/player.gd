@@ -37,7 +37,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	animation_time += delta
 	climbing.tick(delta)
-	_sync_camera_follow()
 
 	var climb_input := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 
@@ -48,7 +47,10 @@ func _physics_process(delta: float) -> void:
 			climbing.physics_step(delta, climb_input)
 		move_and_slide()
 		rig.pose_for_climb(climbing.surface_normal, climb_input, animation_time)
+		_sync_camera_follow()
 		return
+
+	_restore_upright_basis(delta)
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -56,9 +58,8 @@ func _physics_process(delta: float) -> void:
 			climbing.grab_surface()
 			move_and_slide()
 			rig.pose_for_climb(climbing.surface_normal, climb_input, animation_time)
+			_sync_camera_follow()
 			return
-	else:
-		_restore_upright_basis(delta)
 
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -83,6 +84,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	rig.pose_for_ground(forward_input, turn_input, animation_time, is_on_floor())
+	_sync_camera_follow()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -129,4 +131,5 @@ func _restore_upright_basis(delta: float) -> void:
 		forward = forward.normalized()
 
 	var target_basis := Basis.looking_at(forward, Vector3.UP).orthonormalized()
-	global_basis = global_basis.slerp(target_basis, minf(1.0, delta * 10.0)).orthonormalized()
+	var recover_speed := 18.0 if not is_on_floor() else 10.0
+	global_basis = global_basis.slerp(target_basis, minf(1.0, delta * recover_speed)).orthonormalized()

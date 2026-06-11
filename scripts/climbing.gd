@@ -1,11 +1,10 @@
 extends Node
 
-const CLIMB_SPEED := 2.5
+const CLIMB_SPEED := 4.0
 const SURFACE_OFFSET := 1.02
 const JUMP_PUSH := 4.0
 const JUMP_LIFT := 5.5
 const REGRAB_COOLDOWN := 0.3
-
 var is_climbing := false
 var surface_normal := Vector3.FORWARD
 var last_collision_point := Vector3.ZERO
@@ -54,11 +53,15 @@ func physics_step(delta: float, input_vec: Vector2) -> void:
 		surface_right = surface_right.normalized()
 
 	var surface_up := _surface_up()
+	surface_right = -surface_right
 	var motion := surface_right * input_vec.x
 	motion += surface_up * -input_vec.y
 
 	if motion.length_squared() > 0.0:
 		player.global_position += motion.normalized() * CLIMB_SPEED * delta
+		if not _refresh_surface_contact():
+			drop_from_surface()
+			return
 
 	player.velocity = Vector3.ZERO
 	_snap_player_to_surface()
