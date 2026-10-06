@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/goal_flag.gd" id="1_goal"]
+[ext_resource type="PackedScene" path="res://models/flag.glb" id="2_flag"]
+[ext_resource type="AudioStream" path="res://sounds/chime.ogg" id="3_chime"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_touch"]
+size = Vector3(0.9, 1.9, 1.3)
+
+[node name="GoalFlag" type="Area3D"]
+script = ExtResource("1_goal")
+
+[node name="Model" parent="." instance=ExtResource("2_flag")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.95, 0.3)
+shape = SubResource("BoxShape3D_touch")
+
+[node name="ChimeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_chime")
+volume_db = -6.0

@@ -1,0 +1,50 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/boost_pad.gd" id="1_pad"]
+[ext_resource type="AudioStream" path="res://sounds/jump.ogg" id="2_boost"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.1, 0.3, 0.95, 1)
+emission_enabled = true
+emission = Color(0.1, 0.3, 1, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arrow"]
+albedo_color = Color(0.85, 0.92, 1, 1)
+emission_enabled = true
+emission = Color(0.55, 0.75, 1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_pad"]
+size = Vector3(1.4, 0.1, 1.4)
+
+[sub_resource type="PrismMesh" id="PrismMesh_arrow"]
+size = Vector3(0.8, 0.8, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pad"]
+size = Vector3(1.4, 0.5, 1.4)
+
+[node name="BoostPad" type="Area3D"]
+script = ExtResource("1_pad")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_pad")
+
+[node name="Arrow" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Arrow"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+mesh = SubResource("PrismMesh_arrow")
+surface_material_override/0 = SubResource("StandardMaterial3D_arrow")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_pad")
+
+[node name="BoostSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_boost")
+volume_db = -6.0
+pitch_scale = 0.65

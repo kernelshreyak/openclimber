@@ -4,6 +4,9 @@
 [ext_resource type="Script" path="res://scripts/climbing.gd" id="2_m12l1"]
 [ext_resource type="Script" path="res://scripts/procedural_climber.gd" id="3_h3a8g"]
 
+[ext_resource type="AudioStream" path="res://sounds/jump.ogg" id="4_jump"]
+[ext_resource type="AudioStream" path="res://sounds/land.ogg" id="5_land"]
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6to8w"]
 radius = 0.3
 height = 1.85
@@ -35,3 +38,11 @@ spring_length = 6.5
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
 current = true
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_jump")
+volume_db = -8.0
+
+[node name="LandSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_land")
+volume_db = 6.0

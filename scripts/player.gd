@@ -25,9 +25,21 @@ const CAMERA_PAN_Z_LIMIT := 2.5
 const CAMERA_PAN_Y_MIN := 0.8
 const CAMERA_PAN_Y_MAX := 3.0
 const CAMERA_FOLLOW_HEIGHT := 1.4
+# Landings slower than this are silent; faster than the hard speed (a drop of
+# about 4 m) the thud is deeper and louder.
+const LAND_SOUND_MIN_SPEED := 5.0
+const HARD_LANDING_SPEED := 16.0
+const LAND_VOLUME_DB := 6.0
+const HARD_LANDING_VOLUME_DB := 10.0
+const HARD_LANDING_PITCH := 0.75
+const AIR_JUMP_PITCH := 1.25
 
 var animation_time := 0.0
 var air_jumps_left := MAX_AIR_JUMPS
+var airborne := false
+# Set while flying from a boost pad: the arc is not steered or slowed until
+# the player lands or grabs a wall.
+var launched := false
 var camera_yaw := 0.0
 var camera_pitch := CAMERA_DEFAULT_PITCH
 var camera_pan := Vector3.ZERO
@@ -38,6 +50,8 @@ var camera_pan := Vector3.ZERO
 @onready var rig = $VisualRoot
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
+@onready var jump_sound: AudioStreamPlayer = $JumpSound
+@onready var land_sound: AudioStreamPlayer = $LandSound
 
 func _ready() -> void:
 	InputSetup.ensure()
@@ -59,6 +73,7 @@ func _physics_process(delta: float) -> void:
 		air_jumps_left = MAX_AIR_JUMPS
 		if jump_pressed:
 			climbing.jump_from_surface()
+			_play_jump_sound(1.0)
 			jump_pressed = false
 		elif Input.is_action_just_pressed("climb_drop"):
 			climbing.drop_from_surface()
@@ -78,40 +93,76 @@ func _physics_process(delta: float) -> void:
 
 	# Movement is relative to the camera; the character turns to face it.
 	var move_direction := Basis.from_euler(Vector3(0.0, camera_yaw, 0.0)) * Vector3(move_input.x, 0.0, move_input.y)
-	_turn_upright_towards(move_direction, delta)
+	# In a boosted flight the character faces where it is going, so it grabs
+	# the wall it is thrown at.
+	_turn_upright_towards(Vector3(velocity.x, 0.0, velocity.z) if launched else move_direction, delta)
 
 	if is_on_floor():
 		climbing.notify_floor()
 		air_jumps_left = MAX_AIR_JUMPS
 		if jump_pressed:
 			velocity.y = JUMP_VELOCITY
+			_play_jump_sound(1.0)
 	else:
 		if jump_pressed and air_jumps_left > 0:
 			air_jumps_left -= 1
 			velocity.y = AIR_JUMP_VELOCITY
-		var gravity_scale := GRAVITY_SCALE if velocity.y > 0.0 else FALL_GRAVITY_SCALE
+			_play_jump_sound(AIR_JUMP_PITCH)
+		var gravity_scale := GRAVITY_SCALE if velocity.y > 0.0 or launched else FALL_GRAVITY_SCALE
 		velocity += get_gravity() * gravity_scale * delta
 		if climbing.can_start_climb():
+			launched = false
 			climbing.grab_surface()
 			rig.pose_for_climb(climbing.get_grips(), animation_time)
 			_sync_camera_follow()
 			return
 
 	var speed := RUN_SPEED if Input.is_action_pressed("run") else WALK_SPEED
-	if move_direction.length_squared() > 0.0001:
-		velocity.x = move_direction.x * speed
-		velocity.z = move_direction.z * speed
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, WALK_SPEED)
-		velocity.z = move_toward(velocity.z, 0.0, WALK_SPEED)
+	if not launched:
+		if move_direction.length_squared() > 0.0001:
+			velocity.x = move_direction.x * speed
+			velocity.z = move_direction.z * speed
+		else:
+			velocity.x = move_toward(velocity.x, 0.0, WALK_SPEED)
+			velocity.z = move_toward(velocity.z, 0.0, WALK_SPEED)
 
+	var fall_speed := -velocity.y
 	move_and_slide()
 
 	if is_on_floor():
+		if airborne:
+			_play_landing_sound(fall_speed)
+		airborne = false
+		launched = false
 		rig.pose_for_ground(Vector2(velocity.x, velocity.z).length() / WALK_SPEED, animation_time)
 	else:
+		airborne = true
 		rig.pose_for_air(velocity.y, animation_time)
 	_sync_camera_follow()
+
+# Throws the player along an arc that brings the feet to `target` after
+# `flight_time` seconds. Returns false if the player is busy on a wall.
+func launch_to(target: Vector3, flight_time: float) -> bool:
+	if climbing.is_climbing or climbing.is_mantling:
+		return false
+
+	var gravity := get_gravity() * GRAVITY_SCALE
+	velocity = (target - global_position) / flight_time - gravity * flight_time * 0.5
+	launched = true
+	return true
+
+func _play_jump_sound(pitch: float) -> void:
+	jump_sound.pitch_scale = pitch
+	jump_sound.play()
+
+func _play_landing_sound(fall_speed: float) -> void:
+	if fall_speed < LAND_SOUND_MIN_SPEED:
+		return
+
+	var hard := fall_speed >= HARD_LANDING_SPEED
+	land_sound.volume_db = HARD_LANDING_VOLUME_DB if hard else LAND_VOLUME_DB
+	land_sound.pitch_scale = HARD_LANDING_PITCH if hard else 1.0
+	land_sound.play()
 
 func _update_camera_look(delta: float) -> void:
 	if Input.is_action_just_pressed("camera_center"):

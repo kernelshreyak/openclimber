@@ -106,6 +106,15 @@ Jump towards a climbable panel to grab it. Each hand and foot then holds its own
 
 ---
 
+## Credits
+
+Third-party assets, all released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/):
+
+- `models/flag.glb`, `sounds/jump.ogg`, `sounds/land.ogg`, `sounds/chime.ogg` (the kit's `coin.ogg`) — from [Kenney's Starter Kit 3D Platformer](https://github.com/KenneyNL/Starter-Kit-3D-Platformer)
+- `sounds/ambient_park.ogg` — a loop mixed from the wind and birds recordings in [Park ambiences](https://opengameart.org/content/park-ambiences) by Thimras
+
+---
+
 ## Preview
 
 [![OpenClimber v2.1 screencast: the procedural climber on the leaning slab of the obstacle course](docs/v2.1/v2.1-screencast-thumbnail.png)](https://drive.google.com/file/d/1-gOS0S3bAeAPXdvDVJXgydtx1ttCRUnj/view?usp=drive_link)

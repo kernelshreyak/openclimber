@@ -5,7 +5,10 @@
 [ext_resource type="Script" uid="uid://ba7skm2cxs1qn" path="res://scripts/climbable_surface.gd" id="3_climb"]
 [ext_resource type="Shader" uid="uid://dhhbmrtyetkcg" path="res://shaders/surface_grid.gdshader" id="4_grid"]
 [ext_resource type="Material" path="res://materials/wall.tres" id="5_wall"]
-[ext_resource type="Material" path="res://materials/goal.tres" id="6_goal"]
+[ext_resource type="PackedScene" path="res://scenes/goal_flag.tscn" id="6_goal"]
+[ext_resource type="AudioStream" path="res://sounds/ambient_park.ogg" id="7_ambient"]
+[ext_resource type="Script" path="res://scripts/ambient_sound.gd" id="8_ambient"]
+[ext_resource type="PackedScene" path="res://scenes/boost_pad.tscn" id="9_pad"]
 [ext_resource type="Material" path="res://materials/climbable.tres" id="6_o6xl0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_peba3"]
@@ -69,6 +72,11 @@ light_energy = 1.3
 shadow_enabled = true
 shadow_blur = 1.5
 directional_shadow_max_distance = 80.0
+
+[node name="AmbientSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_ambient")
+volume_db = -4.0
+script = ExtResource("8_ambient")
 
 [node name="Player" parent="." unique_id=1756323115 instance=ExtResource("1_qskfu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 7)
@@ -139,11 +147,165 @@ script = ExtResource("2_box")
 size = Vector3(6, 15.34, 4)
 material = ExtResource("5_wall")
 
-[node name="GoalMarker" type="StaticBody3D" parent="Course/GoalTower" unique_id=160974178]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.47, -1)
+[node name="LedgeTower" type="StaticBody3D" parent="Course"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, -17.46)
 script = ExtResource("2_box")
-size = Vector3(0.3, 1.6, 0.3)
-material = ExtResource("6_goal")
+size = Vector3(8, 22, 7)
+material = ExtResource("5_wall")
+
+[node name="PanelLow" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 6.04, 3.56)
+script = ExtResource("3_climb")
+size = Vector3(2, 2.8, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="HangLedge" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 7.615, 3.65)
+script = ExtResource("3_climb")
+size = Vector3(4.5, 0.35, 0.3)
+material = ExtResource("6_o6xl0")
+
+[node name="Strip" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 8.595, 3.65)
+script = ExtResource("3_climb")
+size = Vector3(0.5, 1.61, 0.3)
+material = ExtResource("6_o6xl0")
+
+[node name="UpperLedge" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.575, 3.65)
+script = ExtResource("3_climb")
+size = Vector3(3.5, 0.35, 0.3)
+material = ExtResource("6_o6xl0")
+
+[node name="PanelTop" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 10.375, 3.56)
+script = ExtResource("3_climb")
+size = Vector3(1.6, 1.25, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="RoofWall" type="StaticBody3D" parent="Course/LedgeTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.2, 1.46)
+script = ExtResource("2_box")
+size = Vector3(4, 4.4, 1)
+material = ExtResource("5_wall")
+
+[node name="Panel" type="StaticBody3D" parent="Course/LedgeTower/RoofWall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.375, -0.56)
+script = ExtResource("3_climb")
+size = Vector3(3, 3.05, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="Roof" type="StaticBody3D" parent="Course"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 0, 29.9065, -21.8899)
+script = ExtResource("2_box")
+size = Vector3(4, 1.2, 14)
+material = ExtResource("5_wall")
+
+[node name="Panel" type="StaticBody3D" parent="Course/Roof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.66, 0)
+script = ExtResource("3_climb")
+size = Vector3(3, 0.12, 14)
+material = ExtResource("6_o6xl0")
+
+[node name="SummitTower" type="StaticBody3D" parent="Course"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.75, -26.43)
+script = ExtResource("2_box")
+size = Vector3(10, 25.5, 10.94)
+material = ExtResource("5_wall")
+
+[node name="Landing" type="StaticBody3D" parent="Course/SummitTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14, 0.03)
+script = ExtResource("2_box")
+size = Vector3(4, 2.5, 3)
+material = ExtResource("5_wall")
+
+[node name="Summit" type="StaticBody3D" parent="Course/SummitTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18, -3.47)
+script = ExtResource("2_box")
+size = Vector3(4, 10.5, 4)
+material = ExtResource("5_wall")
+
+[node name="PanelLower" type="StaticBody3D" parent="Course/SummitTower/Summit"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -2.06, -2.225, 1)
+script = ExtResource("3_climb")
+size = Vector3(2, 5.45, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="PanelUpper" type="StaticBody3D" parent="Course/SummitTower/Summit"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -2.06, 1.875, -1)
+script = ExtResource("3_climb")
+size = Vector3(2, 6.75, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="GoalFlag" parent="Course/SummitTower/Summit" instance=ExtResource("6_goal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25, 0)
+
+[node name="Building" type="StaticBody3D" parent="Course"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 7.67, -11.46)
+script = ExtResource("2_box")
+size = Vector3(6, 15.34, 5)
+material = ExtResource("5_wall")
+
+[node name="WallNorth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.27, -2.35)
+script = ExtResource("2_box")
+size = Vector3(6, 3.2, 0.3)
+material = ExtResource("5_wall")
+
+[node name="WallSouth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.27, 2.35)
+script = ExtResource("2_box")
+size = Vector3(6, 3.2, 0.3)
+material = ExtResource("5_wall")
+
+[node name="WallWestNorth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 9.27, -1.47)
+script = ExtResource("2_box")
+size = Vector3(0.3, 3.2, 1.46)
+material = ExtResource("5_wall")
+
+[node name="WallWestSouth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 9.27, 1.43)
+script = ExtResource("2_box")
+size = Vector3(0.3, 3.2, 1.54)
+material = ExtResource("5_wall")
+
+[node name="DoorLintel" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 10.47, -0.04)
+script = ExtResource("2_box")
+size = Vector3(0.3, 0.8, 1.4)
+material = ExtResource("5_wall")
+
+[node name="WallEastNorth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85, 9.27, -1.87)
+script = ExtResource("2_box")
+size = Vector3(0.3, 3.2, 0.66)
+material = ExtResource("5_wall")
+
+[node name="WallEastSouth" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85, 9.27, 1.83)
+script = ExtResource("2_box")
+size = Vector3(0.3, 3.2, 0.74)
+material = ExtResource("5_wall")
+
+[node name="Roof" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.02, 0)
+script = ExtResource("2_box")
+size = Vector3(6, 0.3, 5)
+material = ExtResource("5_wall")
+
+[node name="EntryPanel" type="StaticBody3D" parent="Course/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.06, 5.25, 0.56)
+script = ExtResource("3_climb")
+size = Vector3(0.12, 4.84, 1.6)
+material = ExtResource("6_o6xl0")
+
+[node name="BoostPad" parent="Course/Building" instance=ExtResource("9_pad")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 7.67, -0.94)
+flight_time = 0.9
+
+[node name="Target" type="Marker3D" parent="Course/Building/BoostPad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.53, -4.59, 0)
 
 [node name="Mountain" type="Node3D" parent="."]
 
@@ -195,8 +357,51 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -1.81, 0.15, 0)
 script = ExtResource("3_climb")
 size = Vector3(2.4, 3.7, 0.12)
 
-[node name="GoalMarker" type="StaticBody3D" parent="Mountain/Summit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+[node name="Ridge" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 7, -12)
 script = ExtResource("2_box")
-size = Vector3(0.3, 1.6, 0.3)
-material = ExtResource("6_goal")
+size = Vector3(5.5, 14, 13)
+material = ExtResource("5_wall")
+
+[node name="ReturnPanel" type="StaticBody3D" parent="Mountain/Ridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.81, 4.75, -0.4)
+script = ExtResource("3_climb")
+size = Vector3(0.12, 4.5, 2)
+material = ExtResource("6_o6xl0")
+
+[node name="ChimneyWest" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.25, 18, -16)
+script = ExtResource("2_box")
+size = Vector3(1, 8, 4)
+material = ExtResource("5_wall")
+
+[node name="Panel" type="StaticBody3D" parent="Mountain/ChimneyWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56, 0.15, 0)
+script = ExtResource("3_climb")
+size = Vector3(0.12, 7.7, 3.4)
+material = ExtResource("6_o6xl0")
+
+[node name="ChimneyEast" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.75, 18, -16)
+script = ExtResource("2_box")
+size = Vector3(1, 8, 4)
+material = ExtResource("5_wall")
+
+[node name="Panel" type="StaticBody3D" parent="Mountain/ChimneyEast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56, 0.15, 0)
+script = ExtResource("3_climb")
+size = Vector3(0.12, 7.7, 3.4)
+material = ExtResource("6_o6xl0")
+
+[node name="Bridge" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.375, 21.75, -16)
+script = ExtResource("2_box")
+size = Vector3(10.75, 0.5, 2)
+material = ExtResource("5_wall")
+
+[node name="BoostPad" parent="Mountain" instance=ExtResource("9_pad")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 14, -10.9)
+flight_time = 1.1
+
+[node name="Target" type="Marker3D" parent="Mountain/BoostPad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.28, -2.35, 0)
