@@ -54,7 +54,6 @@ Remaining:
 - [ ] Play-test and tune the grip climbing (speed, body spring, hand placement on narrow strips)
 - [ ] Moving between surfaces that meet at an angle, such as around a corner
 - [ ] Overhangs and ceilings
-- [ ] Refresh the preview screencast below, which predates the visual pass
 
 Dev logs:
 - [Dev log 1 — procedural character and generic surfaces](docs/v2.1/v2.1-dev-log.md)
@@ -109,5 +108,9 @@ Jump towards a climbable panel to grab it. Each hand and foot then holds its own
 
 ## Preview
 
-🎥 **Preview Screencast:**  
+[![OpenClimber v2.1 screencast: the procedural climber on the leaning slab of the obstacle course](docs/v2.1/v2.1-screencast-thumbnail.png)](https://drive.google.com/file/d/1-gOS0S3bAeAPXdvDVJXgydtx1ttCRUnj/view?usp=drive_link)
+
+🎥 **v2.1 screencast:** click the image above, or [watch here](https://drive.google.com/file/d/1-gOS0S3bAeAPXdvDVJXgydtx1ttCRUnj/view?usp=drive_link).
+
+🎥 **Old screencast (v1.x):**  
 [Watch here](https://drive.google.com/file/d/1vDeq46uHeIsy6keVXTva3I7BqDe0_6jK/view?usp=drive_link)
