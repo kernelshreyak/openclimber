@@ -1,11 +1,20 @@
 [gd_scene format=3 uid="uid://by87rhtxrmv06"]
 
 [ext_resource type="PackedScene" uid="uid://c8xbq06auec1t" path="res://scenes/player.tscn" id="1_qskfu"]
-[ext_resource type="PackedScene" uid="uid://c6c2cxddb125a" path="res://scenes/climbable_surface.tscn" id="3_7vh5g"]
+[ext_resource type="Script" uid="uid://c5mvthmmcvh64" path="res://scripts/box_body.gd" id="2_box"]
+[ext_resource type="Script" uid="uid://ba7skm2cxs1qn" path="res://scripts/climbable_surface.gd" id="3_climb"]
+[ext_resource type="Shader" uid="uid://dhhbmrtyetkcg" path="res://shaders/surface_grid.gdshader" id="4_grid"]
+[ext_resource type="Material" path="res://materials/wall.tres" id="5_wall"]
+[ext_resource type="Material" path="res://materials/goal.tres" id="6_goal"]
+[ext_resource type="Material" path="res://materials/climbable.tres" id="6_o6xl0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_peba3"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_top_color = Color(0.24, 0.45, 0.78, 1)
+sky_horizon_color = Color(0.78, 0.84, 0.9, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.5, 0.55, 0.6, 1)
+ground_horizon_color = Color(0.78, 0.84, 0.9, 1)
+sun_angle_max = 20.0
 
 [sub_resource type="Sky" id="Sky_kwekm"]
 sky_material = SubResource("ProceduralSkyMaterial_peba3")
@@ -13,44 +22,181 @@ sky_material = SubResource("ProceduralSkyMaterial_peba3")
 [sub_resource type="Environment" id="Environment_8358f"]
 background_mode = 2
 sky = SubResource("Sky_kwekm")
-tonemap_mode = 2
+ambient_light_source = 3
+ambient_light_color = Color(0.72, 0.8, 0.92, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.9
+tonemap_mode = 4
+ssao_enabled = true
+ssao_radius = 0.6
+ssao_intensity = 1.6
 glow_enabled = true
+glow_intensity = 0.4
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.78, 0.84, 0.9, 1)
+fog_density = 0.004
+fog_sky_affect = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v30ej"]
-size = Vector3(50, 0.1, 50)
+size = Vector3(200, 0.1, 200)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6poe1"]
-size = Vector2(50, 50)
+size = Vector2(200, 200)
 
-[node name="Main" type="Node3D" unique_id=1908581945]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ground"]
+render_priority = 0
+shader = ExtResource("4_grid")
+shader_parameter/base_color = Color(0.5, 0.53, 0.55, 1)
+shader_parameter/alt_color = Color(0.46, 0.49, 0.51, 1)
+shader_parameter/line_color = Color(0.36, 0.38, 0.4, 1)
+shader_parameter/dot_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/cell_size = 2.0
+shader_parameter/line_width = 0.04
+shader_parameter/dot_spacing = 0.0
+shader_parameter/dot_radius = 0.03
+shader_parameter/surface_roughness = 0.95
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1326775595]
+[node name="Main" type="Node3D" unique_id=884234531]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=189056672]
 environment = SubResource("Environment_8358f")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1564536174]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=774973174]
+transform = Transform3D(0.848048, -0.393807, 0.354585, 0, 0.669131, 0.743145, -0.529919, -0.630223, 0.567455, 0, 20, 0)
+light_color = Color(1, 0.95, 0.86, 1)
+light_energy = 1.3
 shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 80.0
 
-[node name="Player" parent="." unique_id=2106825783 instance=ExtResource("1_qskfu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 6)
+[node name="Player" parent="." unique_id=1756323115 instance=ExtResource("1_qskfu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 7)
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=1718009584]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=2126156489]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=902755542]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1790966613]
 shape = SubResource("BoxShape3D_v30ej")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=532620759]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=954654549]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("PlaneMesh_6poe1")
+surface_material_override/0 = SubResource("ShaderMaterial_ground")
 
-[node name="ClimbableSurface1" parent="." unique_id=608335115 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(0.5, 0, 0, 0, 0.49997184, -0.0053057075, 0, 0.0053057075, 0.49997184, 0, 3, 1.8)
+[node name="Course" type="Node3D" parent="." unique_id=226252713]
 
-[node name="ClimbableSurface2" parent="." unique_id=1470782273 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(0.5, 0, 0, 0, 0.49997184, -0.0053057075, 0, 0.0053057075, 0.49997184, 0, 6.0806866, 1.8)
+[node name="Wall1" type="StaticBody3D" parent="Course" unique_id=369779841]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1.5)
+script = ExtResource("2_box")
+size = Vector3(8, 4, 5)
+material = ExtResource("5_wall")
 
-[node name="ClimbableSurface3" parent="." unique_id=861206444 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(1, 0, 0, 0, 2.6822517, 0.4478995, 0, -1.3436985, 0.8940839, 0, 15.983542, -5.4262385)
+[node name="Panel" type="StaticBody3D" parent="Course/Wall1" unique_id=1622117450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 2.56)
+script = ExtResource("3_climb")
+size = Vector3(3, 3.7, 0.12)
+material = ExtResource("6_o6xl0")
 
-[node name="ClimbableSurface4" parent="." unique_id=379254118 instance=ExtResource("3_7vh5g")]
-transform = Transform3D(1, 0, 0, 0, 0.8065168, 0.5912111, 0, -0.5912111, 0.8065168, 0, 8.793687, -1.3561127)
+[node name="Wall2" type="StaticBody3D" parent="Course" unique_id=1168699660]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -6)
+script = ExtResource("2_box")
+size = Vector3(8, 9, 4)
+material = ExtResource("5_wall")
+
+[node name="PanelStart" type="StaticBody3D" parent="Course/Wall2" unique_id=171644192]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.3, 2.06)
+script = ExtResource("3_climb")
+size = Vector3(2, 3, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="PanelTraverse" type="StaticBody3D" parent="Course/Wall2" unique_id=1813444396]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.8, 2.06)
+script = ExtResource("3_climb")
+size = Vector3(5, 2, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="PanelFinish" type="StaticBody3D" parent="Course/Wall2" unique_id=1612189815]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 3.65, 2.06)
+script = ExtResource("3_climb")
+size = Vector3(2, 1.7, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="Slab" type="StaticBody3D" parent="Course" unique_id=1655376926]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 11.9608, -8.93232)
+script = ExtResource("2_box")
+size = Vector3(5, 7, 1)
+material = ExtResource("5_wall")
+
+[node name="Panel" type="StaticBody3D" parent="Course/Slab" unique_id=527619699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.56)
+script = ExtResource("3_climb")
+size = Vector3(3, 6.6, 0.12)
+material = ExtResource("6_o6xl0")
+
+[node name="GoalTower" type="StaticBody3D" parent="Course" unique_id=1884670623]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.67, -11.96)
+script = ExtResource("2_box")
+size = Vector3(6, 15.34, 4)
+material = ExtResource("5_wall")
+
+[node name="GoalMarker" type="StaticBody3D" parent="Course/GoalTower" unique_id=160974178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.47, -1)
+script = ExtResource("2_box")
+size = Vector3(0.3, 1.6, 0.3)
+material = ExtResource("6_goal")
+
+[node name="Mountain" type="Node3D" parent="."]
+
+[node name="Base" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 2.5, -2)
+script = ExtResource("2_box")
+size = Vector3(9, 5, 8)
+material = ExtResource("5_wall")
+
+[node name="PanelLower" type="StaticBody3D" parent="Mountain/Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, -0.9, 4.06)
+script = ExtResource("3_climb")
+size = Vector3(2.2, 2.6, 0.12)
+
+[node name="PanelUpper" type="StaticBody3D" parent="Mountain/Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.45, 4.06)
+script = ExtResource("3_climb")
+size = Vector3(2.2, 2.1, 0.12)
+
+[node name="Middle" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 7.5, -3.5)
+script = ExtResource("2_box")
+size = Vector3(6, 5, 5)
+material = ExtResource("5_wall")
+
+[node name="HangLedge" type="StaticBody3D" parent="Mountain/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.5, 2.65)
+script = ExtResource("3_climb")
+size = Vector3(3.2, 0.35, 0.3)
+
+[node name="Strip" type="StaticBody3D" parent="Mountain/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.4125, 2.65)
+script = ExtResource("3_climb")
+size = Vector3(0.5, 1.475, 0.3)
+
+[node name="TopLedge" type="StaticBody3D" parent="Mountain/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 2.325, 2.65)
+script = ExtResource("3_climb")
+size = Vector3(2.6, 0.35, 0.3)
+
+[node name="Summit" type="StaticBody3D" parent="Mountain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 12, -3.75)
+script = ExtResource("2_box")
+size = Vector3(3.5, 4, 3.5)
+material = ExtResource("5_wall")
+
+[node name="PanelSide" type="StaticBody3D" parent="Mountain/Summit"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -1.81, 0.15, 0)
+script = ExtResource("3_climb")
+size = Vector3(2.4, 3.7, 0.12)
+
+[node name="GoalMarker" type="StaticBody3D" parent="Mountain/Summit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+script = ExtResource("2_box")
+size = Vector3(0.3, 1.6, 0.3)
+material = ExtResource("6_goal")

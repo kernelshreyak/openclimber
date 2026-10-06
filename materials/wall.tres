@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/surface_grid.gdshader" id="1"]
+
+[resource]
+shader = ExtResource("1")
+shader_parameter/base_color = Color(0.74, 0.72, 0.68, 1)
+shader_parameter/alt_color = Color(0.71, 0.69, 0.65, 1)
+shader_parameter/line_color = Color(0.56, 0.54, 0.5, 1)
+shader_parameter/dot_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/cell_size = 1.0
+shader_parameter/line_width = 0.03
+shader_parameter/dot_spacing = 0.0
+shader_parameter/dot_radius = 0.03
+shader_parameter/surface_roughness = 0.95

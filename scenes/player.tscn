@@ -1,34 +1,34 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8xbq06auec1t"]
+[gd_scene format=3 uid="uid://c8xbq06auec1t"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_q4r2l"]
 [ext_resource type="Script" path="res://scripts/climbing.gd" id="2_m12l1"]
 [ext_resource type="Script" path="res://scripts/procedural_climber.gd" id="3_h3a8g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6to8w"]
-radius = 0.42
-height = 1.35
+radius = 0.3
+height = 1.85
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_q4r2l")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-position = Vector3(0, 1.04, 0)
+position = Vector3(0, 0.925, 0)
 shape = SubResource("CapsuleShape3D_6to8w")
 
 [node name="VisualRoot" type="Node3D" parent="."]
-rotation_degrees = Vector3(0, 180, 0)
+scale = Vector3(0.8, 0.8, 0.8)
 script = ExtResource("3_h3a8g")
 
 [node name="Climbing" type="Node" parent="."]
 script = ExtResource("2_m12l1")
 
 [node name="ClimbProbe" type="RayCast3D" parent="."]
-position = Vector3(0, 1.46, 0)
-target_position = Vector3(0, 0, -1.9)
+position = Vector3(0, 1.55, 0)
+target_position = Vector3(0, 0, -1.1)
 enabled = true
 
 [node name="CameraPivot" type="Node3D" parent="."]
-position = Vector3(0, 1.7, 0)
+position = Vector3(0, 1.4, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
 spring_length = 6.5
